@@ -1,0 +1,172 @@
+﻿<html>
+<head>
+		<!--link href="framework.css" rel="stylesheet" type="text/css">
+		<link href="custom.css" rel="stylesheet" type="text/css"-->
+		<link rel="stylesheet" href="http://www.dustloop.com/forums/uploads/css_built_15/341e4a57816af3ba440d891ca87450ff_framework.css.865bb069ca9a7e545d79d95591d28caa.css?v=e91c5282a8" media="all">
+		<link rel="stylesheet" href="http://www.dustloop.com/forums/uploads/css_built_15/05e81b71abe4f22d6eb8d1a929494829_responsive.css.172384954e74b96b932374a055521605.css?v=e91c5282a8" media="all">
+		<link rel="stylesheet" href="http://www.dustloop.com/forums/uploads/css_built_15/90eb5adf50a8c640f633d47fd7eb1778_core.css.2a75800a32de367543d2b90f97037ce7.css?v=e91c5282a8" media="all">
+		<link rel="stylesheet" href="http://www.dustloop.com/forums/uploads/css_built_15/5a0da001ccc2200dc5625c3f3934497d_core_responsive.css.46135005d7e46c91f392afa72aaf44cd.css?v=e91c5282a8" media="all">
+		<link rel="stylesheet" href="http://www.dustloop.com/forums/uploads/css_built_15/62e269ced0fdab7e30e026f1d30ae516_forums.css.28c5867508c483786522320669b22103.css?v=e91c5282a8" media="all">
+		<link rel="stylesheet" href="http://www.dustloop.com/forums/uploads/css_built_15/76e62c573090645fb99a15a363d8620e_forums_responsive.css.9fbd0a5889d1acd1d279211ed94d1443.css?v=e91c5282a8" media="all">
+		<link rel="stylesheet" href="http://www.dustloop.com/forums/uploads/css_built_15/258adbb6e4f3e83cd3b355f84e3fa002_custom.css.0758c253a0f71410fcf8ad22d9b20433.css?v=e91c5282a8" media="all">
+</head>
+<body class="ipsApp ipsApp_front ipsJS_has ipsClearfix" data-controller="core.front.core.app"  data-message=""  data-pageapp="forums" data-pagelocation="front" data-pagemodule="forums" data-pagecontroller="index" itemscope itemtype="http://schema.org/WebSite">
+	<div id="ipsLayout_header" class="ipsClearfix">
+		<header>
+			<div class="ipsLayout_container">
+				<a href="{% url 'discord:index' %}" id="elLogo" accesskey="1"><span style="color: rgb(250, 250, 250); font-size: 24px;">Definitely Not </span><img src="http://www.dustloop.com/forums/uploads/monthly_2016_03/lightdustloop.png.671eea959c3a5f000e6bd7fa99568b0e.png" alt="Not Dustloop Forums"></a>
+			</div>
+		</header>
+		
+	</div>
+	<main role="main" id="ipsLayout_body" class="ipsLayout_container">
+		<div id="ipsLayout_contentArea">
+			<div id="elHeaderNavigation" class="ipsSubNavigation" style="border-radius: 3px 3px 0px 0px;">
+				<nav class="ipsLayout_container" data-controller="core.front.core.navBar" id="ips_uid_5365_2" style="padding: 0px; max-width: 100%">
+					<div class="ipsNavBar_primary ipsClearfix" style="color: rgb(250, 250, 250); padding: 5px 5px 5px 5px;">
+						I Totally Didn't Just Steal Dustloop's CSS
+					</div>
+				</nav>
+				<nav class="ipsBreadcrumb ipsBreadcrumb_top ipsFaded_withHover" style="display: block;">
+					<ul itemscope="" itemtype="http://schema.org/BreadcrumbList">
+						<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" style="display: table-cell;">
+							<a href="{% url 'discord:index' %}" itemprop="url">
+								<span itemprop="name">Home</span>
+							</a>
+						</li>
+						<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"style="display: table-cell;">
+							<span itemprop="name">/</span>
+							<a href="{% url 'discord:guild' guild.id %}" itemprop="url">
+								<span itemprop="name">{{ guild.name }}</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+			<div id="ipsLayout_contentWrapper">
+				<div id="ipsLayout_mainArea">
+					<div class="ipsPageHeader ipsClearfix">
+						<div class="ipsPhotoPanel ipsPhotoPanel_small ipsPhotoPanel_notPhone ipsClearfix">
+							<div>
+								<h1 class="ipsType_pageTitle">
+									{{ channel.name }}
+								</h1>
+							</div>
+						</div>
+					</div>
+					<div data-controller="core.front.core.commentFeed,forums.front.topic.view, core.front.core.ignoredComments" class="cTopic ipsClear ipsSpacer_top">
+						<h2 class="ipsType_sectionTitle ipsType_reset ipsType_medium" data-role="comment_count" data-commentcountstring="js_num_topic_posts">{{ channel.message_set.values|length }} Messages</h2>
+						<div class="ipsButtonBar ipsPad_half ipsClearfix ipsClear">
+							<ul class="ipsPagination">
+								{% if page != 1 %}
+								<li class="ipsPagination_first"><a href="{% url 'discord:channel' channel.guild.id channel.id 1 %}"><<</a></li>
+								<li class="ipsPagination_prev"><a href="{% url 'discord:channel' channel.guild.id channel.id prev %}">Prev</a></li>
+								{% endif %}
+								{% for i in blist %}
+								<li class="ipsPagination_page"><a href="{% url 'discord:channel' channel.guild.id channel.id i %}">{{ i }}</a></li>
+								{% endfor %}
+								<li class="ipsPagination_page ipsPagination_active"><a href="{% url 'discord:channel' channel.guild.id channel.id page %}">{{ page }}</a></li>
+								{% for i in flist %}
+								<li class="ipsPagination_page"><a href="{% url 'discord:channel' channel.guild.id channel.id i %}">{{ i }}</a></li>
+								{% endfor %}
+								{% if page != last %}
+								<li class="ipsPagination_next"><a href="{% url 'discord:channel' channel.guild.id channel.id next %}">Next</a></li>
+								<li class="ipsPagination_last"><a href="{% url 'discord:channel' channel.guild.id channel.id last %}">>></a></li>
+								{% endif %}
+								<li class="ipsPagination_pageJump">
+									<a href="#">Page {{ page }} of {{ last }} &nbsp;</a>
+									<form accept-charset="utf-8" method="post" action="jump/">
+										<ul class="ipsForm ipsForm_horizontal">
+											<li class="ipsFieldRow">
+												<input type="number" min="1" max="{{ last }}" placeholder="Page number" class="ipsField_fullWidth" name="page">
+											</li>
+											<li class="ipsFieldRow ipsFieldRow_fullWidth">
+												<input type="submit" class="ipsButton_fullWidth ipsButton ipsButton_verySmall ipsButton_primary" value="Go">
+											</li>
+										</ul>
+									</form>
+								</li>
+							</ul>
+						</div>
+						<div data-role="commentFeed" data-controller="core.front.core.moderation" class="ipsAreaBackground_light ipsPad">
+							{% for message in messages %}
+							<article itemscope="" itemtype="http://schema.org/Comment" class="cPost ipsBox  ipsComment  ipsComment_parent ipsClearfix ipsClear ipsColumns ipsColumns_noSpacing ipsColumns_collapsePhone  ">
+								<aside class="ipsComment_author cAuthorPane ipsAreaBackground_light ipsColumn ipsColumn_medium">
+									<h3 class="ipsType_sectionHead cAuthorPane_author ipsType_break" itemprop="creator" itemscope="" itemtype="http://schema.org/Person">
+										<strong itemprop="name">{{ message.user.username }}</strong>
+										<span class="ipsResponsive_showPhone ipsResponsive_inline">nbsp;&nbsp;</span>
+									</h3>
+									<ul class="cAuthorPane_info ipsList_reset">
+										<li class="cAuthorPane_photo">
+											{% if message.user.avatar %}
+											<img src="https://cdn.discordapp.com/avatars/{{ message.user.id }}/{{ message.user.avatar }}.jpg" alt="{{ message.user.username }}" itemprop="image" height="64" width="64">
+											{% else %}
+											<img src="https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png" alt="{{ message.user.username }}" itemprop="image" height="64" width="64">
+											{% endif %}
+										</li>
+									</ul>
+								</aside>
+								<div class="ipsColumn ipsColumn_fluid">
+									<div data-controller="core.front.core.comment" data-commentapp="forums" data-commenttype="forums">
+										<div class="ipsComment_meta ipsType_light">
+											<p class="ipsType_reset">
+												Posted {{ message.post_date|date }} {{ message.post_date|time }}
+											</p>
+										</div>
+										<div class="cPost_contentWrap ipsPad">		
+											<div data-role="commentContent" itemprop="text" class="ipsType_normal ipsType_richText ipsContained" data-controller="core.front.core.lightboxedImages">
+												<p>{{ message.content }}</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</article>
+							{% endfor %}
+						</div>
+						<div class="ipsButtonBar ipsPad_half ipsClearfix ipsClear">
+							<ul class="ipsPagination">
+								{% if page != 1 %}
+								<li class="ipsPagination_first"><a href="{% url 'discord:channel' channel.guild.id channel.id 1 %}"><<</a></li>
+								<li class="ipsPagination_prev"><a href="{% url 'discord:channel' channel.guild.id channel.id prev %}">Prev</a></li>
+								{% endif %}
+								{% for i in blist %}
+								<li class="ipsPagination_page"><a href="{% url 'discord:channel' channel.guild.id channel.id i %}">{{ i }}</a></li>
+								{% endfor %}
+								<li class="ipsPagination_page ipsPagination_active"><a href="{% url 'discord:channel' channel.guild.id channel.id page %}">{{ page }}</a></li>
+								{% for i in flist %}
+								<li class="ipsPagination_page"><a href="{% url 'discord:channel' channel.guild.id channel.id i %}">{{ i }}</a></li>
+								{% endfor %}
+								{% if page != last %}
+								<li class="ipsPagination_next"><a href="{% url 'discord:channel' channel.guild.id channel.id next %}">Next</a></li>
+								<li class="ipsPagination_last"><a href="{% url 'discord:channel' channel.guild.id channel.id last %}">>></a></li>
+								{% endif %}
+								<li class="ipsPagination_pageJump">
+									<a href="#">Page {{ page }} of {{ last }} &nbsp;</a>
+									<form accept-charset="utf-8" method="post" action="jump/">
+										<ul class="ipsForm ipsForm_horizontal">
+											<li class="ipsFieldRow">
+												<input type="number" min="1" max="{{ last }}" placeholder="Page number" class="ipsField_fullWidth" name="page">
+											</li>
+											<li class="ipsFieldRow ipsFieldRow_fullWidth">
+												<input type="submit" class="ipsButton_fullWidth ipsButton ipsButton_verySmall ipsButton_primary" value="Go">
+											</li>
+										</ul>
+									</form>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="ipsGrid ipsGrid_collapsePhone ipsPager ipsClearfix ipsSpacer_top">
+						<div class="ipsGrid_span6 ipsType_left">
+							<a href="{% url 'discord:guild' guild.id %}"rel="up">
+								<span class="ipsPager_type">Go To Channel Listing</span>
+								<span class="ipsPager_title ipsType_light ipsType_break">{{ guild.name }}</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</main>
+</body>
+</html>
