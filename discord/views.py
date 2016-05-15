@@ -42,7 +42,7 @@ def channel(request, guild, channel, page):
 					users = User.objects.filter(id=userid) 
 					if len(users) == 1:
 						message.content = message.content.replace(word, "@" + users[0].username)
-	context = {'messages': messages, 'guild':g, 'channel':c, 'page':page, 'last':last, 'prev':int(page)-1, 'next':int(page)+1, 'blist':blist, 'flist':flist}
+	context = {'messages': messages, 'guild':g, 'channel':c, 'page':page, 'last':str(last), 'prev':int(page)-1, 'next':int(page)+1, 'blist':blist, 'flist':flist}
 	return render(request, 'discord/channel.html', context)
 
 def jump(request, guild, channel, page):
