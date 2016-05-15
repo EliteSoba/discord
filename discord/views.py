@@ -101,7 +101,7 @@ def update(request):
 			content = request.POST['content']
 			edited = parse_time(request.POST['edited'])
 			message = Message.objects.filter(id=id)
-			if len(message) == 1
+			if len(message) == 1:
 				message = message[0]
 				message.content = content
 				message.last_edit = edited
@@ -111,7 +111,7 @@ def update(request):
 		elif type == 'messagedelete':
 			id = request.POST['id']
 			message = Message.objects.filter(id=id)
-			if len(message) == 1
+			if len(message) == 1:
 				message = message[0]
 				message.delete()
 				return HttpResponse(status=201)
