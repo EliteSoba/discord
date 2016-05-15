@@ -9,5 +9,5 @@ urlpatterns = [
 	url(r'^(?P<guild>[0-9]+)/(?P<channel>[0-9]+)/(?P<page>[0-9]+)/$', views.channel, name='channel'),
 	url(r'^create/$', views.create, name='create'),
 	url(r'^(?P<guild>[0-9]+)/(?P<channel>[0-9]+)/(?P<page>[0-9]+)/jump/$', views.jump, name='jump'),
-	url(r'^(?P<channel[0-9]+)/latest/$', views.latest, name='latest'),
+	url(r'^(?P<channel>[0-9]+)/latest/$', views.latest, name='latest'),
 ]
