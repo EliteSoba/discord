@@ -33,7 +33,16 @@ def channel(request, guild, channel, page):
 	last = (((len(c.message_set.values())-1)/50)+1)
 	blist = [i for i in range(1, int(page))][-5:]
 	flist = [i for i in range(int(page)+1, last+1)][:5]
-	context = {'messages': c.message_set.order_by('id')[50*(int(page)-1):50*(int(page))], 'guild':g, 'channel':c, 'page':page, 'last':last, 'prev':int(page)-1, 'next':int(page)+1, 'blist':blist, 'flist':flist}
+	messages = c.message_set.order_by('id')[50*(int(page)-1):50*(int(page))]
+	for message in messages:
+		if "<@" in message.content:
+			for word in message.content.split(" "):
+				if "<@" in word:
+					userid = word[2:-1]
+					users = User.objects.filter(id=userid) 
+					if len(users) == 1:
+						message.content = message.content.replace(word, "@" + users[0].username)
+	context = {'messages': messages, 'guild':g, 'channel':c, 'page':page, 'last':last, 'prev':int(page)-1, 'next':int(page)+1, 'blist':blist, 'flist':flist}
 	return render(request, 'discord/channel.html', context)
 
 def jump(request, guild, channel, page):
