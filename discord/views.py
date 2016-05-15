@@ -53,6 +53,11 @@ def jump(request, guild, channel, page):
 	else:
 		return HttpResponseRedirect(reverse('discord:channel', args=(guild, channel, p,)))
 
+def latest(request, channel):
+	c = get_object_or_404(Channel, id=channel)
+	message = c.message_set.order_by('-id')[0]
+	return message.id
+
 @csrf_exempt
 def create(request):
 	if 'type' in request.POST:
