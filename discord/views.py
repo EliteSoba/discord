@@ -59,6 +59,65 @@ def latest(request, channel):
 	return HttpResponse(str(message.id))
 
 @csrf_exempt
+def update(request):
+	if 'type' in request.POST:
+		type = request.POST['type']
+		if type == 'guild':
+			id = request.POST['id']
+			name = request.POST['name']
+			icon = request.POST['icon']
+			guild = Guild.objects.filter(id=id)
+			if len(guild) == 1:
+				guild = guild[0]
+				guild.name = name
+				guild.icon = icon
+				guild.save()
+				return HttpResponse(status=201)
+			return HttpResponse(status=403)
+		elif type == 'channel':
+			id = request.POST['id']
+			name = request.POST['name']
+			channel = Channel.objects.filter(id=id)
+			if len(channel) == 1:
+				channel = channel[0]
+				channel.name = name
+				channel.save()
+				return HttpResponse(status=201)
+			return HttpResponse(status=403)
+		elif type == 'user':
+			id = request.POST['id']
+			username = request.POST['username']
+			avatar = request.POST['avatar']
+			user = User.objects.filter(id=id)
+			if len(user) == 1:
+				user = user[0]
+				user.username = username
+				user.avatar = avatar
+				user.save()
+				return HttpResponse(status=201)
+			return HttpResponse(status=403)
+		elif type == 'message':
+			id = request.POST['id']
+			content = request.POST['content']
+			edited = parse_time(request.POST['edited'])
+			message = Message.objects.filter(id=id)
+			if len(message) == 1
+				message = message[0]
+				message.content = content
+				message.last_edit = edited
+				message.save()
+				return HttpResponse(status=201)
+			return HttpResponse(status=403)
+		elif type == 'messagedelete':
+			id = request.POST['id']
+			message = Message.objects.filter(id=id)
+			if len(message) == 1
+				message = message[0]
+				message.delete()
+				return HttpResponse(status=201)
+			return HttpResponse(status=403)
+
+@csrf_exempt
 def create(request):
 	if 'type' in request.POST:
 		type = request.POST['type']
