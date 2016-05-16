@@ -55,7 +55,7 @@ def jump(request, guild, channel, page):
 
 def latest(request, channel):
 	c = get_object_or_404(Channel, id=channel)
-	message = c.message_set.order_by('-id')[0]
+	message = c.message_set.order_by('-post_date')[0]
 	return HttpResponse(str(message.id))
 
 @csrf_exempt
