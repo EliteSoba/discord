@@ -33,7 +33,7 @@ def channel(request, guild, channel, page):
 	last = (((len(c.message_set.values())-1)/50)+1)
 	blist = [i for i in range(1, int(page))][-5:]
 	flist = [i for i in range(int(page)+1, last+1)][:5]
-	messages = c.message_set.order_by('id')[50*(int(page)-1):50*(int(page))]
+	messages = c.message_set.order_by('post_date')[50*(int(page)-1):50*(int(page))]
 	for message in messages:
 		if "<@" in message.content:
 			for word in message.content.split(" "):
