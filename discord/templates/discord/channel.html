@@ -90,7 +90,7 @@
 						</div>
 						<div data-role="commentFeed" data-controller="core.front.core.moderation" class="ipsAreaBackground_light ipsPad">
 							{% for message in messages %}
-							<article itemscope="" itemtype="http://schema.org/Comment" class="cPost ipsBox  ipsComment  ipsComment_parent ipsClearfix ipsClear ipsColumns ipsColumns_noSpacing ipsColumns_collapsePhone  ">
+							<article itemscope="" itemtype="http://schema.org/Comment" class="cPost ipsBox  ipsComment  ipsComment_parent ipsClearfix ipsClear ipsColumns ipsColumns_noSpacing ipsColumns_collapsePhone" style="padding-top: 0">
 								<aside class="ipsComment_author cAuthorPane ipsAreaBackground_light ipsColumn ipsColumn_medium">
 									<h3 class="ipsType_sectionHead cAuthorPane_author ipsType_break" itemprop="creator" itemscope="" itemtype="http://schema.org/Person">
 										<strong itemprop="name">{{ message.user.username }}</strong>
@@ -99,9 +99,9 @@
 									<ul class="cAuthorPane_info ipsList_reset">
 										<li class="cAuthorPane_photo">
 											{% if message.user.avatar %}
-											<img src="https://cdn.discordapp.com/avatars/{{ message.user.id }}/{{ message.user.avatar }}.jpg" alt="{{ message.user.username }}" itemprop="image" height="64" width="64">
+											<img src="https://cdn.discordapp.com/avatars/{{ message.user.id }}/{{ message.user.avatar }}.jpg" alt="{{ message.user.username }}" itemprop="image" height="64" width="64" style="border-radius: 50%">
 											{% else %}
-											<img src="https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png" alt="{{ message.user.username }}" itemprop="image" height="64" width="64">
+											<img src="https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png" alt="{{ message.user.username }}" itemprop="image" height="64" width="64" style="border-radius: 50%">
 											{% endif %}
 										</li>
 									</ul>
