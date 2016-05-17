@@ -89,8 +89,8 @@
 						</div>
 						<div data-role="commentFeed" data-controller="core.front.core.moderation" class="ipsAreaBackground_light ipsPad">
 							{% for message in messages %}
-							<article itemscope="" itemtype="http://schema.org/Comment" class="cPost ipsBox  ipsComment  ipsComment_parent ipsClearfix ipsClear ipsColumns ipsColumns_noSpacing ipsColumns_collapsePhone" style="padding-top: 0">
-								<aside class="ipsComment_author cAuthorPane ipsAreaBackground_light ipsColumn ipsColumn_medium">
+							<article itemscope="" itemtype="http://schema.org/Comment" class="cPost ipsBox  ipsComment  ipsComment_parent ipsClearfix ipsClear ipsColumns ipsColumns_noSpacing ipsColumns_collapsePhone" style="padding-top: 0; margin-bottom: 5px;">
+								<aside class="ipsComment_author cAuthorPane ipsAreaBackground_light ipsColumn ipsColumn_medium" style="padding-bottom: 0px!important; padding-top: 5px!important;>
 									<h3 class="ipsType_sectionHead cAuthorPane_author ipsType_break" itemprop="creator" itemscope="" itemtype="http://schema.org/Person">
 										<strong itemprop="name">{{ message.user.username }}</strong>
 										<span class="ipsResponsive_showPhone ipsResponsive_inline">nbsp;&nbsp;</span>
@@ -107,7 +107,7 @@
 								</aside>
 								<div class="ipsColumn ipsColumn_fluid">
 									<div data-controller="core.front.core.comment" data-commentapp="forums" data-commenttype="forums">
-										<div class="ipsComment_meta ipsType_light">
+										<div class="ipsComment_meta ipsType_light" style="padding-top: 5px">
 											<p class="ipsType_reset">
 												Posted {{ message.post_date|date }} {{ message.post_date|time }}
 												{% if message.last_edit %}
@@ -115,8 +115,8 @@
 												{% endif %}
 											</p>
 										</div>
-										<div class="cPost_contentWrap ipsPad">		
-											<div data-role="commentContent" itemprop="text" class="ipsType_normal ipsType_richText ipsContained" data-controller="core.front.core.lightboxedImages">
+										<div class="cPost_contentWrap ipsPad" style="padding-bottom: 5px">		
+											<div data-role="commentContent" itemprop="text" class="ipsType_normal ipsType_richText ipsContained" data-controller="core.front.core.lightboxedImages" style="margin-bottom: 0px;">
 												<p>{{ message.content }}</p>
 												{% if message.attachment_set.all %}
 													{% for attachment in message.attachment_set.all %}
