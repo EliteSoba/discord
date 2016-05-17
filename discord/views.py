@@ -183,6 +183,8 @@ def create(request):
 			if Message.objects.filter(id=message).exists() and (not Attachment.objects.filter(id=id).exists()):
 				message = Message.objects.get(id=message)
 				message.attachment_set.create(id=id, name=name, url=url, proxy_url=proxy_url, is_image=is_image, height=height, width=width)
+				return HttpResponse(status=201)
+			return HttpResponse(status=403)
 		else:
 			raise Http404("Invalid Request")
 
