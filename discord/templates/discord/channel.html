@@ -110,6 +110,9 @@
 										<div class="ipsComment_meta ipsType_light">
 											<p class="ipsType_reset">
 												Posted {{ message.post_date|date }} {{ message.post_date|time }}
+												{% if message.last_edit %}
+												 (edited)
+												{% endif %}
 											</p>
 										</div>
 										<div class="cPost_contentWrap ipsPad">		
@@ -127,6 +130,13 @@
 														{% endif %}
 														</p>
 													{% endfor %}
+												{% endif %}
+												{% if message.last_edit %}
+												<p>
+													<span class="ipsType_reset ipsType_medium ipsType_light" data-excludequote="">
+														<strong>Edited {{ message.last_edit|date }} {{ message.last_edit|time }}</strong>
+													</span>
+												</p>
 												{% endif %}
 											</div>
 										</div>
