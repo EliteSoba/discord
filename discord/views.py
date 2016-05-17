@@ -131,11 +131,13 @@ def create(request):
 			id = request.POST['id']
 			name = request.POST['name']
 			g = request.POST['guild']
-			if (not Channel.objects.filter(id=id).exists()) and (Guild.objects.filter(id=g).exists()):
+			if Channel.objects.filter(id=id).exists():
+				return HttpResponse(status=403)
+			if Guild.objects.filter(id=g).exists():
 				guild = Guild.objects.get(id=g)
 				guild.channel_set.create(id=id, name=name)
 				return HttpResponse(status=201)
-			return HttpResponse(status=403)
+			return HttpResponse(status=404)
 		elif type == 'user':
 			id = request.POST['id']
 			username = request.POST['username']
@@ -152,12 +154,14 @@ def create(request):
 			content = request.POST['content']
 			timestamp = parse_time(request.POST['timestamp'])
 			edited = parse_time(request.POST['edited'])
-			if (not Message.objects.filter(id=id).exists()) and (Channel.objects.filter(id=channel).exists()) and (User.objects.filter(id=user).exists()):
+			if Message.objects.filter(id=id).exists():
+				return HttpResponse(403)
+			if (Channel.objects.filter(id=channel).exists()) and (User.objects.filter(id=user).exists()):
 				channel = Channel.objects.get(id=channel)
 				user = User.objects.get(id=user)
 				channel.message_set.create(id=id, user=user, post_date=timestamp, last_edit=edited, content=content)
 				return HttpResponse(status=201)
-			return HttpResponse(status=403)
+			return HttpResponse(status=404)
 		elif type == 'attachment':
 			id = request.POST['id']
 			name = request.POST['name']
@@ -180,11 +184,13 @@ def create(request):
 				height = 0
 				width = 0
 			message = request.POST['message']
-			if (Message.objects.filter(id=message).exists()) and (not Attachment.objects.filter(id=id).exists()):
+			if Attachment.objects.filter(id=id).exists():
+				return HttpResponse(403)
+			if Message.objects.filter(id=message).exists():
 				message = Message.objects.get(id=message)
 				message.attachment_set.create(id=id, name=name, url=url, proxy_url=proxy_url, is_image=is_image, height=height, width=width)
 				return HttpResponse(status=201)
-			return HttpResponse(status=403)
+			return HttpResponse(status=404)
 		else:
 			raise Http404("Invalid Request")
 
