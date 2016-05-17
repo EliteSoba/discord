@@ -70,7 +70,7 @@ def update(request):
 				guild.icon = icon
 				guild.save()
 				return HttpResponse(status=201)
-			return HttpResponse(status=403)
+			return HttpResponse(status=409)
 		elif type == 'channel':
 			id = request.POST['id']
 			name = request.POST['name']
@@ -80,7 +80,7 @@ def update(request):
 				channel.name = name
 				channel.save()
 				return HttpResponse(status=201)
-			return HttpResponse(status=403)
+			return HttpResponse(status=409)
 		elif type == 'user':
 			id = request.POST['id']
 			username = request.POST['username']
@@ -92,7 +92,7 @@ def update(request):
 				user.avatar = avatar
 				user.save()
 				return HttpResponse(status=201)
-			return HttpResponse(status=403)
+			return HttpResponse(status=409)
 		elif type == 'message':
 			id = request.POST['id']
 			content = request.POST['content']
@@ -104,7 +104,7 @@ def update(request):
 				message.last_edit = edited
 				message.save()
 				return HttpResponse(status=201)
-			return HttpResponse(status=403)
+			return HttpResponse(status=409)
 		elif type == 'messagedelete':
 			id = request.POST['id']
 			message = Message.objects.filter(id=id)
@@ -112,7 +112,7 @@ def update(request):
 				message = message[0]
 				message.delete()
 				return HttpResponse(status=201)
-			return HttpResponse(status=403)
+			return HttpResponse(status=409)
 
 @csrf_exempt
 def create(request):
@@ -126,18 +126,18 @@ def create(request):
 				guild = Guild(id=id, name=name, icon=icon)
 				guild.save()
 				return HttpResponse(status=201)
-			return HttpResponse(status=403)
+			return HttpResponse(status=409)
 		elif type == 'channel':
 			id = request.POST['id']
 			name = request.POST['name']
 			g = request.POST['guild']
 			if Channel.objects.filter(id=id).exists():
-				return HttpResponse(status=403)
+				return HttpResponse(status=409)
 			if Guild.objects.filter(id=g).exists():
 				guild = Guild.objects.get(id=g)
 				guild.channel_set.create(id=id, name=name)
 				return HttpResponse(status=201)
-			return HttpResponse(status=404)
+			return HttpResponse(status=424)
 		elif type == 'user':
 			id = request.POST['id']
 			username = request.POST['username']
@@ -146,7 +146,7 @@ def create(request):
 				user = User(id=id, username=username, avatar=avatar)
 				user.save()
 				return HttpResponse(status=201)
-			return HttpResponse(status=403)
+			return HttpResponse(status=409)
 		elif type == 'message':
 			id = request.POST['id']
 			channel = request.POST['channel']
@@ -155,13 +155,13 @@ def create(request):
 			timestamp = parse_time(request.POST['timestamp'])
 			edited = parse_time(request.POST['edited'])
 			if Message.objects.filter(id=id).exists():
-				return HttpResponse(403)
+				return HttpResponse(status=409)
 			if (Channel.objects.filter(id=channel).exists()) and (User.objects.filter(id=user).exists()):
 				channel = Channel.objects.get(id=channel)
 				user = User.objects.get(id=user)
 				channel.message_set.create(id=id, user=user, post_date=timestamp, last_edit=edited, content=content)
 				return HttpResponse(status=201)
-			return HttpResponse(status=404)
+			return HttpResponse(status=424)
 		elif type == 'attachment':
 			id = request.POST['id']
 			name = request.POST['name']
@@ -185,12 +185,12 @@ def create(request):
 				width = 0
 			message = request.POST['message']
 			if Attachment.objects.filter(id=id).exists():
-				return HttpResponse(403)
+				return HttpResponse(status=409)
 			if Message.objects.filter(id=message).exists():
 				message = Message.objects.get(id=message)
 				message.attachment_set.create(id=id, name=name, url=url, proxy_url=proxy_url, is_image=is_image, height=height, width=width)
 				return HttpResponse(status=201)
-			return HttpResponse(status=404)
+			return HttpResponse(status=424)
 		else:
 			raise Http404("Invalid Request")
 
