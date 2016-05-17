@@ -39,6 +39,13 @@ def channel(request, guild, channel, page):
 					users = User.objects.filter(id=userid) 
 					if len(users) == 1:
 						message.content = message.content.replace(word, "@" + users[0].username)
+		if "<#" in message.content:
+			for word in message.content.split(" "):
+				if "<#" in word:
+					channelid = word[2:-1]
+					channels = Channel.objects.filter(id=channelid) 
+					if len(channels) == 1:
+						message.content = message.content.replace(word, "@" + channels[0].name)
 	context = {'messages': messages, 'guild':g, 'channel':c, 'page':page, 'last':str(last), 'prev':int(page)-1, 'next':int(page)+1, 'blist':blist, 'flist':flist}
 	return render(request, 'discord/channel.html', context)
 
