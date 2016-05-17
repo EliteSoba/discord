@@ -122,7 +122,7 @@ def create(request):
 			id = request.POST['id']
 			name = request.POST['name']
 			icon = request.POST['icon']
-			if len(Guild.objects.filter(id=id)) < 1:
+			if not Guild.objects.filter(id=id).exists():
 				guild = Guild(id=id, name=name, icon=icon)
 				guild.save()
 				return HttpResponse(status=201)
@@ -131,7 +131,7 @@ def create(request):
 			id = request.POST['id']
 			name = request.POST['name']
 			g = request.POST['guild']
-			if (len(Channel.objects.filter(id=id)) < 1) and (len(Guild.objects.filter(id=g)) == 1):
+			if (not Channel.objects.filter(id=id).exists()) and (Guild.objects.filter(id=g).exists()):
 				guild = Guild.objects.get(id=g)
 				guild.channel_set.create(id=id, name=name)
 				return HttpResponse(status=201)
@@ -140,7 +140,7 @@ def create(request):
 			id = request.POST['id']
 			username = request.POST['username']
 			avatar = request.POST['avatar']
-			if len(User.objects.filter(id=id)) < 1:
+			if not User.objects.filter(id=id).exists():
 				user = User(id=id, username=username, avatar=avatar)
 				user.save()
 				return HttpResponse(status=201)
@@ -152,7 +152,7 @@ def create(request):
 			content = request.POST['content']
 			timestamp = parse_time(request.POST['timestamp'])
 			edited = parse_time(request.POST['edited'])
-			if len(Message.objects.filter(id=id)) < 1 and len(Channel.objects.filter(id=channel)) == 1 and len(User.objects.filter(id=user)) == 1:
+			if (not Message.objects.filter(id=id).exists()) and (Channel.objects.filter(id=channel).exists()) and (User.objects.filter(id=user).exists()):
 				channel = Channel.objects.get(id=channel)
 				user = User.objects.get(id=user)
 				channel.message_set.create(id=id, user=user, post_date=timestamp, last_edit=edited, content=content)
@@ -180,7 +180,7 @@ def create(request):
 				height = 0
 				width = 0
 			message = request.POST['message']
-			if Message.objects.filter(id=message).exists() and (not Attachment.objects.filter(id=id).exists()):
+			if (Message.objects.filter(id=message).exists()) and (not Attachment.objects.filter(id=id).exists()):
 				message = Message.objects.get(id=message)
 				message.attachment_set.create(id=id, name=name, url=url, proxy_url=proxy_url, is_image=is_image, height=height, width=width)
 				return HttpResponse(status=201)
