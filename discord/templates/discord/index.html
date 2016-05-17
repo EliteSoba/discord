@@ -77,7 +77,7 @@
 									Miscellaneous
 								</h2>
 								<ol class="ipsDataList ipsDataList_large ipsDataList_zebra ipsAreaBackground_reset" data-role="forums">
-									{% for guild in misc %}
+									{% for guild in misc|dictsort:"name" %}
 									<li class="ipsDataItem ipsDataItem_responsivePhoto  ipsClearfix">
 										<div class="ipsDataItem_icon ipsDataItem_category">
 											{% if guild.icon %}
