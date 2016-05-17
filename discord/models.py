@@ -28,7 +28,7 @@ class Message(models.Model):
 	post_date = models.DateTimeField('Date Posted')
 	last_edit = models.DateTimeField('Last Edit Date', null=True, blank=True)
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
-	content = models.TextField(max_length=1000)
+	content = models.TextField()
 
 class Attachment(models.Model):
 	id = models.CharField(max_length=64,primary_key=True)
