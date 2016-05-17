@@ -1,12 +1,11 @@
 from django.shortcuts import get_object_or_404, render
-from django.views import generic
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse
 from re import split as re_split
 import datetime
 
-from .models import Guild, Channel, User, Message
+from .models import Guild, Channel, User, Message, Game, Attachment
 
 def parse_time(timestamp):
 	if timestamp:
@@ -14,13 +13,11 @@ def parse_time(timestamp):
 	return None
 
 # Create your views here.
-
-class IndexView(generic.ListView):
-	template_name = 'discord/index.html'
-	context_object_name = 'guild_list'
-	
-	def get_queryset(self):
-		return Guild.objects.order_by('name')
+def index(request):
+	games = Game.objects.order_by('name')
+	misc = Guild.objects.filter(game__isnull=True)
+	context = {'game_list': games, 'misc': misc}
+	return render(request, 'discord/index.html', context)
 
 def guild(request, guild):
 	g = Guild.objects.get(id=guild)
@@ -161,6 +158,31 @@ def create(request):
 				channel.message_set.create(id=id, user=user, post_date=timestamp, last_edit=edited, content=content)
 				return HttpResponse(status=201)
 			return HttpResponse(status=403)
+		elif type == 'attachment':
+			id = request.POST['id']
+			name = request.POST['name']
+			url = request.POST['url']
+			proxy_url = request.POST['proxy_url']
+			if str(name).split(".")[-1] in ["jpg", "png", "gif", "jpeg"]:
+				is_image = True
+				height = int(request.POST['height'])
+				width = int(request.POST['width'])
+				if height > width:
+					if height > 500:
+						width = int(width * 500.0 / height)
+						height = 500
+				else:
+					if width > 500:
+						height = int(height * 500.0 / width)
+						width = 500	
+			else:
+				is_image = False
+				height = 0
+				width = 0
+			message = request.POST['message']
+			if Message.objects.filter(id=message).exists() and (not Attachment.objects.filter(id=id).exists()):
+				message = Message.objects.get(id=message)
+				message.attachment_set.create(id=id, name=name, url=url, proxy_url=proxy_url, is_image=is_image, height=height, width=width)
 		else:
 			raise Http404("Invalid Request")
 

@@ -43,13 +43,41 @@
 					</div>
 					<section>
 						<ol class="ipsList_reset cForumList" data-controller="core.global.core.table, forums.front.forum.forumList" data-baseurl="">
-							{% if guild_list %}
+							{% if game_list %}
+							{% for game in game_list %}
 							<li class="cForumRow ipsBox ipsSpacer_bottom">
 								<h2 class="ipsType_sectionTitle ipsType_reset cForumTitle">
-									I don't know what to put here because I stole the CSS from Dustloop
+									{{ game.name }}
 								</h2>
 								<ol class="ipsDataList ipsDataList_large ipsDataList_zebra ipsAreaBackground_reset" data-role="forums">
-									{% for guild in guild_list %}
+									{% for guild in game.guild_set.all %}
+									<li class="ipsDataItem ipsDataItem_responsivePhoto  ipsClearfix">
+										<div class="ipsDataItem_icon ipsDataItem_category">
+											{% if guild.icon %}
+											<img src="https://cdn.discordapp.com/icons/{{ guild.id }}/{{ guild.icon }}.jpg" height="50" width="50" class="ipsItemStatus ipsItemStatus_custom ipsItemStatus_read" style="border-radius: 25px">
+											{% else %}
+											<img src="https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png" height="50" width="50" class="ipsItemStatus ipsItemStatus_custom ipsItemStatus_read" style="border-radius: 25px">
+											{% endif %}
+										</div>
+										<div class="ipsDataItem_main" style="display: table-cell;">
+											<h4 class="ipsDataItem_title ipsType_large">
+												<a href="{% url 'discord:guild' guild.id %}">{{ guild.name }}</a>
+											</h4>
+											<div class="ipsDataItem_meta ipsType_richText"><p></p></div>
+										</div>
+									</li>
+									{% endfor %}
+								</ol>
+							</li>
+							{% endfor %}
+							{% endif %}
+							{% if misc %}
+							<li class="cForumRow ipsBox ipsSpacer_bottom">
+								<h2 class="ipsType_sectionTitle ipsType_reset cForumTitle">
+									Miscellaneous
+								</h2>
+								<ol class="ipsDataList ipsDataList_large ipsDataList_zebra ipsAreaBackground_reset" data-role="forums">
+									{% for guild in misc %}
 									<li class="ipsDataItem ipsDataItem_responsivePhoto  ipsClearfix">
 										<div class="ipsDataItem_icon ipsDataItem_category">
 											{% if guild.icon %}

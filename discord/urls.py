@@ -4,7 +4,7 @@ from . import views
 
 app_name = 'discord'
 urlpatterns = [
-	url(r'^$', views.IndexView.as_view(), name='index'),
+	url(r'^$', views.index, name='index'),
 	url(r'^(?P<guild>[0-9]+)/$', views.guild, name='guild'),
 	url(r'^(?P<guild>[0-9]+)/(?P<channel>[0-9]+)/(?P<page>[0-9]+)/$', views.channel, name='channel'),
 	url(r'^create/$', views.create, name='create'),

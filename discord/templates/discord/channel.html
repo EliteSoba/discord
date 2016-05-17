@@ -116,6 +116,19 @@
 										<div class="cPost_contentWrap ipsPad">		
 											<div data-role="commentContent" itemprop="text" class="ipsType_normal ipsType_richText ipsContained" data-controller="core.front.core.lightboxedImages">
 												<p>{{ message.content }}</p>
+												{% if message.attachment_set.all %}
+													{% for attachment in message.attachment_set.all %}
+														<p>
+														{% if attachment.is_image %}
+															<a href="{{ attachment.url }}">
+																<img src="{{ attachment.proxy_url }}?height={{ attachment.height }}&width={{ attachment.width }}" alt="{{ attachment.name }}" title="{{ attachment.name }}">
+															</a>
+														{% else %}
+															Attached: <a href="{{ attachment.url }}">{{ attachment.name }}</a>
+														{% endif %}
+														</p>
+													{% endfor %}
+												{% endif %}
 											</div>
 										</div>
 									</div>
