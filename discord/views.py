@@ -167,7 +167,7 @@ def create(request):
 			name = request.POST['name']
 			url = request.POST['url']
 			proxy_url = request.POST['proxy_url']
-			if str(name).split(".")[-1] in ["jpg", "png", "gif", "jpeg"]:
+			if lower(str(name)).split(".")[-1] in ["jpg", "png", "gif", "jpeg"]:
 				is_image = True
 				height = int(request.POST['height'])
 				width = int(request.POST['width'])
