@@ -1,13 +1,14 @@
-﻿<html>
+﻿{% load staticfiles %}
+<html>
 <head>
 		<title>{{ channel.name }} - {{ guild.name }}</title>
-		<link rel="stylesheet" href="http://www.dustloop.com/forums/uploads/css_built_15/341e4a57816af3ba440d891ca87450ff_framework.css.865bb069ca9a7e545d79d95591d28caa.css?v=e91c5282a8" media="all">
-		<link rel="stylesheet" href="http://www.dustloop.com/forums/uploads/css_built_15/05e81b71abe4f22d6eb8d1a929494829_responsive.css.172384954e74b96b932374a055521605.css?v=e91c5282a8" media="all">
-		<link rel="stylesheet" href="http://www.dustloop.com/forums/uploads/css_built_15/90eb5adf50a8c640f633d47fd7eb1778_core.css.2a75800a32de367543d2b90f97037ce7.css?v=e91c5282a8" media="all">
-		<link rel="stylesheet" href="http://www.dustloop.com/forums/uploads/css_built_15/5a0da001ccc2200dc5625c3f3934497d_core_responsive.css.46135005d7e46c91f392afa72aaf44cd.css?v=e91c5282a8" media="all">
-		<link rel="stylesheet" href="http://www.dustloop.com/forums/uploads/css_built_15/62e269ced0fdab7e30e026f1d30ae516_forums.css.28c5867508c483786522320669b22103.css?v=e91c5282a8" media="all">
-		<link rel="stylesheet" href="http://www.dustloop.com/forums/uploads/css_built_15/76e62c573090645fb99a15a363d8620e_forums_responsive.css.9fbd0a5889d1acd1d279211ed94d1443.css?v=e91c5282a8" media="all">
-		<link rel="stylesheet" href="http://www.dustloop.com/forums/uploads/css_built_15/258adbb6e4f3e83cd3b355f84e3fa002_custom.css.0758c253a0f71410fcf8ad22d9b20433.css?v=e91c5282a8" media="all">
+		<link rel="stylesheet" type="text/css" href="{% static 'discord/framework.css' %}" media="all">
+		<link rel="stylesheet" type="text/css" href="{% static 'discord/responsive.css' %}" media="all">
+		<link rel="stylesheet" type="text/css" href="{% static 'discord/core.css' %}" media="all">
+		<link rel="stylesheet" type="text/css" href="{% static 'discord/core_responsive.css' %}" media="all">
+		<link rel="stylesheet" type="text/css" href="{% static 'discord/forums.css' %}" media="all">
+		<link rel="stylesheet" type="text/css" href="{% static 'discord/forums_responsive.css' %}" media="all">
+		<link rel="stylesheet" type="text/css" href="{% static 'discord/custom.css' %}" media="all">
 </head>
 <body class="ipsApp ipsApp_front ipsJS_has ipsClearfix" data-controller="core.front.core.app"  data-message=""  data-pageapp="forums" data-pagelocation="front" data-pagemodule="forums" data-pagecontroller="index" itemscope itemtype="http://schema.org/WebSite">
 	<div id="ipsLayout_header" class="ipsClearfix">
