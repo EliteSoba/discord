@@ -84,7 +84,7 @@ def search(request, page):
 			for game in games.split("+"):
 				q = q | Q(channel__guild__game__id=game)
 			query = query & q
-		results = Message.objects.filter(query)
+		results = Message.objects.filter(query).order_by('-post_date')
 		
 		last = (((len(results)-1)/50)+1)
 		blist = [i for i in range(1, int(page))][-5:]
