@@ -25,6 +25,15 @@
 				<nav class="ipsLayout_container" data-controller="core.front.core.navBar" id="ips_uid_5365_2" style="padding: 0px; max-width: 100%">
 					<div class="ipsNavBar_primary ipsClearfix" style="color: rgb(250, 250, 250); padding: 5px 5px 5px 5px;">
 						I Totally Didn't Just Steal Dustloop's CSS
+				
+						<span id="elSearch" class="ipsPos_right" data-controller="core.front.core.quickSearch" itemprop="potentialAction" itemscope="" itemtype="http://schema.org/SearchAction" data-default="forums_topic">
+							<form accept-charset="utf-8" action="{% url 'discord:search' 1 %}" method="get">
+								<meta itemprop="target" content="{% url 'discord:search' 1 %}">
+								<input type="search" id="elSearchField" placeholder="Search..." name="querytext" itemprop="query-input" style="right: 30;">
+								<input type="hidden" name="channel" value="{{ guild.id }}">
+								<button type="submit" style="right: 1; color: rgb(0,0,0);">⌕</button>
+							</form>
+						</span>
 					</div>
 				</nav>
 				<nav class="ipsBreadcrumb ipsBreadcrumb_top ipsFaded_withHover" style="display: block;">

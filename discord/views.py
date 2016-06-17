@@ -2,8 +2,10 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from re import split as re_split
 import datetime
+import urllib
 
 from .models import Guild, Channel, User, Message, Game, Attachment
 
@@ -46,6 +48,7 @@ def channel(request, guild, channel, page):
 					channels = Channel.objects.filter(id=channelid) 
 					if len(channels) == 1:
 						message.content = message.content.replace(word, "#" + channels[0].name)
+		#message.content = message.content.replace("<", "&lt;").replace(">", "&gt;")
 	context = {'messages': messages, 'guild':g, 'channel':c, 'page':page, 'last':str(last), 'prev':int(page)-1, 'next':int(page)+1, 'blist':blist, 'flist':flist}
 	return render(request, 'discord/channel.html', context)
 
@@ -56,6 +59,82 @@ def jump(request, guild, channel, page):
 		return HttpResponse(status=404)
 	else:
 		return HttpResponseRedirect(reverse('discord:channel', args=(guild, channel, p,)))
+
+def search(request, page):
+	if 'querytext' in request.GET and request.GET['querytext'] != "":
+		#Render page with search results
+		querytext = request.GET['querytext']
+		channels = request.GET['channel'] if 'channel' in request.GET else None
+		guilds = request.GET['guild'] if 'guild' in request.GET else None
+		games = request.GET['game'] if 'game' in request.GET else None
+		
+		query = Q(content__contains="" + querytext + "")
+		if channels:
+			q = Q()
+			for channel in channels.split("+"):
+				q = q | Q(channel__id=channel)
+			query = query & q
+		if guilds:
+			q = Q()
+			for guild in guilds.split("+"):
+				q = q | Q(channel__guild__id=guild)
+			query = query & q
+		if games:
+			q = Q()
+			for game in games.split("+"):
+				q = q | Q(channel__guild__game__id=game)
+			query = query & q
+		results = Message.objects.filter(query)
+		
+		last = (((len(results)-1)/50)+1)
+		blist = [i for i in range(1, int(page))][-5:]
+		flist = [i for i in range(int(page)+1, last+1)][:5]
+		messages = results[50*(int(page)-1):50*(int(page))]
+		for message in messages:
+			if "<@" in message.content:
+				for word in message.content.split(" "):
+					if "<@" in word:
+						userid = word[2:-1]
+						users = User.objects.filter(id=userid) 
+						if len(users) == 1:
+							message.content = message.content.replace(word, "@" + users[0].username)
+			if "<#" in message.content:
+				for word in message.content.split(" "):
+					if "<#" in word:
+						channelid = word[2:-1]
+						channels = Channel.objects.filter(id=channelid) 
+						if len(channels) == 1:
+							message.content = message.content.replace(word, "#" + channels[0].name)
+			#AAAAAAAAA
+			message.content = message.content.replace("<", "&lt;").replace(">", "&gt;")
+			message.content = message.content.replace("" + querytext + "", "<b>" + querytext + "</b>")
+		
+		pages = []
+		"""for result in results:
+			channel = result.channel
+			index = channel.message_set.filter(post_date__lt = result.post_date).count()
+			page = index/50+1
+			asdf = "<a href='http://localhost:8000/discord/"+str(channel.guild.id)+"/"+str(channel.id)+"/"+str(page)+"/#"+str(result.id)+"'>Link</a>"
+			pages.append((result.id, result.content, asdf))"""
+		#context = {"message": pages}
+		#return render(request, 'discord/results.html', context)
+		#return HttpResponse(str(pages))
+		context = {'messages': messages, 'page':page, 'last':str(last), 'prev':int(page)-1, 'next':int(page)+1, 'blist':blist, 'flist':flist, 'searched': True, 'total': len(results), 'guilds': Guild.objects.all(), 'query': urllib.urlencode(request.GET)}
+		return render(request, 'discord/search.html', context)
+	else:
+		#Render the page without any results
+		#return render(request, 'discord/results.html', {})
+		return render(request, 'discord/search.html', {'guilds': Guild.objects.all(), 'searched': False})
+
+def searchhome(request):
+	return render(request, 'discord/search.html', {'guilds': Guild.objects.all(), 'searched': False})
+
+def find(request, guild, channel, message):
+	m = get_object_or_404(Message, id=message)
+	c = get_object_or_404(Channel, id=channel)
+	index = c.message_set.filter(post_date__lt = m.post_date).count()
+	page = index/50+1
+	return HttpResponseRedirect(reverse('discord:channel', args=(guild, channel, page,)) + "#" + str(message))
 
 def latest(request, channel):
 	c = get_object_or_404(Channel, id=channel)
