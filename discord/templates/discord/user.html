@@ -1,0 +1,172 @@
+﻿{% load staticfiles %}
+{% load mathfilters %}
+<html lang="en-US" dir="ltr">
+<head>
+		<title>Search</title>
+		<link rel="stylesheet" type="text/css" href="{% static 'discord/framework.css' %}" media="all">
+		<link rel="stylesheet" type="text/css" href="{% static 'discord/responsive.css' %}" media="all">
+		<link rel="stylesheet" type="text/css" href="{% static 'discord/core.css' %}" media="all">
+		<link rel="stylesheet" type="text/css" href="{% static 'discord/core_responsive.css' %}" media="all">
+		<link rel="stylesheet" type="text/css" href="{% static 'discord/forums.css' %}" media="all">
+		<link rel="stylesheet" type="text/css" href="{% static 'discord/forums_responsive.css' %}" media="all">
+		<link rel="stylesheet" type="text/css" href="{% static 'discord/custom.css' %}" media="all">
+</head>
+<body class="ipsApp ipsApp_front ipsJS_has ipsClearfix" data-controller="core.front.core.app"  data-message=""  data-pageapp="forums" data-pagelocation="front" data-pagemodule="forums" data-pagecontroller="index" itemscope itemtype="http://schema.org/WebSite">
+	<div id="ipsLayout_header" class="ipsClearfix">
+		<header>
+			<div class="ipsLayout_container">
+				<a href="{% url 'discord:index' %}" id="elLogo" accesskey="1"><span style="color: rgb(250, 250, 250); font-size: 24px;">Definitely Not </span><img src="http://www.dustloop.com/forums/uploads/monthly_2016_03/lightdustloop.png.671eea959c3a5f000e6bd7fa99568b0e.png" alt="Not Dustloop Forums"></a>
+			</div>
+		</header>
+		
+	</div>
+	<main role="main" id="ipsLayout_body" class="ipsLayout_container">
+		<div id="ipsLayout_contentArea">
+			<div id="elHeaderNavigation" class="ipsSubNavigation" style="border-radius: 3px 3px 0px 0px;">
+				<nav class="ipsLayout_container" data-controller="core.front.core.navBar" id="ips_uid_5365_2" style="padding: 0px; max-width: 100%">
+					<div class="ipsNavBar_primary ipsClearfix" style="color: rgb(250, 250, 250); padding: 5px 5px 5px 5px;">
+						I Totally Didn't Just Steal Dustloop's CSS
+				
+						<span id="elSearch" class="ipsPos_right" data-controller="core.front.core.quickSearch" itemprop="potentialAction" itemscope="" itemtype="http://schema.org/SearchAction" data-default="forums_topic">
+							<form accept-charset="utf-8" action="{% url 'discord:search' 1 %}" method="get">
+								<meta itemprop="target" content="{% url 'discord:search' 1 %}">
+								<input type="search" id="elSearchField" placeholder="Search..." name="querytext" itemprop="query-input" style="right: 30;">
+								<button type="submit" style="right: 1; color: rgb(0,0,0);">⌕</button>
+							</form>
+						</span>
+					</div>
+				</nav>
+				<nav class="ipsBreadcrumb ipsBreadcrumb_top ipsFaded_withHover" style="display: block;">
+					<ul itemscope="" itemtype="http://schema.org/BreadcrumbList">
+						<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" style="display: table-cell;">
+							<a href="{% url 'discord:index' %}" itemprop="url">
+								<span itemprop="name">Home</span>
+							</a>
+						</li>
+						<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"style="display: table-cell;">
+							<span itemprop="name">/</span>
+							<a href="{% url 'discord:searchhome' %}" itemprop="url">
+								<span itemprop="name">Search</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+			<div id="ipsLayout_contentWrapper">
+				<!--div class="cWidgetContainer " data-role="widgetReceiver" data-orientation="horizontal" data-widgetarea="header">
+					<ul class="ipsList_reset">
+						
+							
+								<li class="ipsWidget ipsWidget_horizontal ipsBox ipsWidgetHide ipsHide" data-blockid="app_core_announcements_announcements" data-blockconfig="true" data-blocktitle="Announcements" data-controller="core.front.widgets.block"></li>
+							
+						
+					</ul>
+				</div-->
+				<div id="ipsLayout_mainArea">
+					<div data-controller="core.front.search.main" data-baseurl="http://www.dustloop.com/forums/index.php?/search/">
+						<div class="ipsResponsive_hidePhone ipsResponsive_block ipsPageHeader">
+							<h1 class="ipsType_pageTitle">Search the Community</h1>
+							<p class="ipsType_reset ipsType_large ipsHide" data-role="searchBlurb"></p>
+						</div>
+						{% if searched %}
+						<div id="elSearch_main" class="ipsSpacer_top" data-role="filterContent">
+							<div data-controller="core.front.search.results" data-role="resultsArea">
+								<p class="ipsType_sectionTitle ipsType_reset">Found {{ total }} results</p>
+									<div class="ipsButtonBar ipsPad_half ipsClearfix ipsClear">
+										<ul class="ipsPagination">
+											{% if page != "1" %}
+											<li class="ipsPagination_first"><a href="{% url 'discord:searchuser' userid 1 %}?{{ query }}"><<</a></li>
+											<li class="ipsPagination_prev"><a href="{% url 'discord:searchuser' userid prev %}?{{ query }}">Prev</a></li>
+											{% endif %}
+											{% for i in blist %}
+											<li class="ipsPagination_page"><a href="{% url 'discord:searchuser' userid i %}?{{ query }}">{{ i }}</a></li>
+											{% endfor %}
+											<li class="ipsPagination_page ipsPagination_active"><a href="{% url 'discord:searchuser' userid page %}?{{ query }}">{{ page }}</a></li>
+											{% for i in flist %}
+											<li class="ipsPagination_page"><a href="{% url 'discord:searchuser' userid i %}?{{ query }}">{{ i }}</a></li>
+											{% endfor %}
+											{% if page != last %}
+											<li class="ipsPagination_next"><a href="{% url 'discord:searchuser' userid next %}?{{ query }}">Next</a></li>
+											<li class="ipsPagination_last"><a href="{% url 'discord:searchuser' userid last %}?{{ query }}">>></a></li>
+											{% endif %}
+											<!--li class="ipsPagination_pageJump">
+												<a href="#">Page {{ page }} of {{ last }} &nbsp;</a>
+												<form accept-charset="utf-8" method="post" action="jump/">
+													<ul class="ipsForm ipsForm_horizontal">
+														<li class="ipsFieldRow">
+															<input type="number" min="1" max="{{ last }}" placeholder="Page number" class="ipsField_fullWidth" name="page">
+														</li>
+														<li class="ipsFieldRow ipsFieldRow_fullWidth">
+															<input type="submit" class="ipsButton_fullWidth ipsButton ipsButton_verySmall ipsButton_primary" value="Go">
+														</li>
+													</ul>
+												</form>
+											</li-->
+										</ul>
+									</div>
+								<div class="ipsAreaBackground_light ipsPad">
+									<ol class="ipsStream ipsList_reset" data-role="resultsContents">
+										{% for message in messages %}
+										<li data-controller="core.front.statuses.status" class="ipsStreamItem ipsStreamItem_contentBlock   ipsAreaBackground_reset ipsPad" data-timestamp="1358446027" data-role="activityItem" data-statusid="60093" data-processed="true">
+											<div class="ipsStreamItem_container">
+												<div class="ipsStreamItem_header ipsPhotoPanel ipsPhotoPanel_mini">
+													{% if message.user.avatar %}
+													<img class="ipsUserPhoto ipsUserPhoto_mini" src="https://cdn.discordapp.com/avatars/{{ message.user.id }}/{{ message.user.avatar }}.jpg" alt="{{ message.user.username }}" style="border-radius: 50%">
+													{% else %}
+													<img class="ipsUserPhoto ipsUserPhoto_mini" src="https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png" alt="{{ message.user.username }}" style="border-radius: 50%">
+													{% endif %}
+													<div>
+														<h2 class="ipsType_reset ipsStreamItem_title  ipsType_break">
+															<strong>
+																{{ message.user.username }}
+															</strong>
+														</h2>
+													</div>
+												</div>
+												<div class="ipsStreamItem_snippet">
+													<div class="ipsType_richText ipsType_normal ipsContained">
+														<p>{{ message.content }}</p>
+														{% if message.attachment_set.all %}
+															{% for attachment in message.attachment_set.all %}
+																<p>
+																{% if attachment.is_image %}
+																	<a href="{{ attachment.url }}">
+																		<img src="{{ attachment.proxy_url }}?height={{ attachment.height }}&width={{ attachment.width }}" alt="{{ attachment.name }}" title="{{ attachment.name }}">
+																	</a>
+																{% else %}
+																	Attached: <a href="{{ attachment.url }}">{{ attachment.name }}</a>
+																{% endif %}
+																</p>
+															{% endfor %}
+														{% endif %}
+													</div>
+												</div>
+												<ul class="ipsList_inline ipsStreamItem_meta ipsFaded_withHover">
+													<li class="ipsType_medium">
+														<a href="{% url 'discord:find' message.channel.guild.id message.channel.id message.id %}" class="ipsType_blendLinks">
+															<span class="ipsType_light">
+																◴
+																Posted {{ message.post_date|date }} {{ message.post_date|time }}
+																{% if message.last_edit %}
+																 (edited)
+																{% endif %}
+															</span>
+														</a>
+												<a href="{% url 'discord:find' message.channel.guild.id message.channel.id message.id %}" class="ipsType_blendLinks" style="position: absolute; right: 30px; bottom: 5px;">To Post --></a>
+													</li>
+												</ul>
+											</div>
+										</li>
+										{% endfor %}
+									</ol>
+								</div>
+							</div>
+						</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+</body>
+</html>

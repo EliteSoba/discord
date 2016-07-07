@@ -89,7 +89,7 @@
 								<div class="ipsPhotoPanel ipsPhotoPanel_mini cSearchMainBar">
 									<button type="submit" class="cSearchPretendButton ipsPos_left ipsCursor_default" tabindex="-1" style="font-size: xx-large; width: 30; height: 30; border: 0; margin: 0; background: transparent;">⌕</button>
 									<div>
-										<input type="text" id="elMainSearchInput" name="querytext" value="" placeholder="Search Term" autofocus="" class="ipsField_primary ipsField_fullWidth"><br>
+										<input type="text" id="querytext" name="querytext" value="" placeholder="Search Term" autofocus="" class="ipsField_primary ipsField_fullWidth"><br>
 										<hr class="ipsHr">
 									</div>
 								</div>
@@ -101,7 +101,7 @@
 													<div class="ipsGrid_span12">
 														<div class="ipsGrid_span12" data-role="searchFilters" id="elSearchFiltersMain">
 															<div class="ipsGrid ipsGrid_collapsePhone">
-																<div class="ipsGrid_span4">
+																<div class="ipsGrid_span3">
 																	<h3 class="ipsType_reset ipsType_large cStreamForm_title">Find results in...</h3>
 																	<ul class="ipsSideMenu_list ipsSideMenu_withChecks ipsSideMenu_small ipsType_normal ipsSpacer_top ipsSpacer_half" data-ipssidemenu=""data-ipssidemenu-responsive="false" data-filtertype="searchIn">
 																		<div class="ipsGrid ipsGrid_collapsePhone">
@@ -121,7 +121,13 @@
 																		<input type="hidden" name="guild" id="guild_str">
 																	</ul>
 																</div>
-																<div class="ipsGrid_span4">
+																<div class="ipsGrid_span3">
+																	<h3 class="ipsType_reset ipsType_large cStreamForm_title">With Username...</h3>
+																	<ul class="ipsSideMenu_list ipsSideMenu_withChecks ipsSideMenu_small ipsType_normal ipsSpacer_top ipsSpacer_half" data-ipssidemenu="" data-ipssidemenu-responsive="false" data-filtertype="andOr">
+																		<input type="text" id="user" name="user" value="" placeholder="Username" autofocus="" class="ipsField_primary ipsField_fullWidth"><br>
+																	</ul>
+																</div>
+																<div class="ipsGrid_span3">
 																	<h3 class="ipsType_reset ipsType_large cStreamForm_title">Find results that...</h3>
 																	<ul class="ipsSideMenu_list ipsSideMenu_withChecks ipsSideMenu_small ipsType_normal ipsSpacer_top ipsSpacer_half" data-ipssidemenu="" data-ipssidemenu-responsive="false" data-filtertype="andOr">
 																		<li>
@@ -134,7 +140,7 @@
 																		</li>
 																	</ul>
 																</div>
-																<div class="ipsGrid_span4">
+																<div class="ipsGrid_span3">
 																	<h3 class="ipsType_reset ipsType_large cStreamForm_title">Date Created</h3>
 																	<ul class="ipsSideMenu_list ipsSideMenu_withRadios ipsSideMenu_small ipsType_normal ipsSpacer_top ipsSpacer_half" role="radiogroup" data-ipssidemenu="" data-ipssidemenu-type="radio" data-ipssidemenu-responsive="false" data-filtertype="dateCreated">
 																		<li>

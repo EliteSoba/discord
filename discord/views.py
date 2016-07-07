@@ -60,15 +60,46 @@ def jump(request, guild, channel, page):
 	else:
 		return HttpResponseRedirect(reverse('discord:channel', args=(guild, channel, p,)))
 
+def searchuser(request, user, page):
+	#Render page with search results
+	results = Message.objects.filter(user__id=user).order_by('-post_date')
+	
+	last = (((len(results)-1)/50)+1)
+	blist = [i for i in range(1, int(page))][-5:]
+	flist = [i for i in range(int(page)+1, last+1)][:5]
+	messages = results[50*(int(page)-1):50*(int(page))]
+	for message in messages:
+		if "<@" in message.content:
+			for word in message.content.split(" "):
+				if "<@" in word:
+					userid = word[2:-1]
+					users = User.objects.filter(id=userid) 
+					if len(users) == 1:
+						message.content = message.content.replace(word, "@" + users[0].username)
+		if "<#" in message.content:
+			for word in message.content.split(" "):
+				if "<#" in word:
+					channelid = word[2:-1]
+					channels = Channel.objects.filter(id=channelid) 
+					if len(channels) == 1:
+						message.content = message.content.replace(word, "#" + channels[0].name)
+	
+	context = {'messages': messages, 'page':page, 'last':str(last), 'prev':int(page)-1, 'next':int(page)+1, 'blist':blist, 'flist':flist, 'searched': True, 'total': len(results), 'guilds': Guild.objects.all(), 'query': urllib.urlencode(request.GET), 'userid': user}
+	return render(request, 'discord/user.html', context)
+
 def search(request, page):
-	if 'querytext' in request.GET and request.GET['querytext'] != "":
+	if 'querytext' in request.GET:
 		#Render page with search results
-		querytext = request.GET['querytext']
+		querytext = request.GET['querytext'] if 'querytext' in request.GET else None
 		channels = request.GET['channel'] if 'channel' in request.GET else None
 		guilds = request.GET['guild'] if 'guild' in request.GET else None
 		games = request.GET['game'] if 'game' in request.GET else None
+		users = request.GET['user'] if 'user' in request.GET else None
 		
-		query = Q(content__contains="" + querytext + "")
+		query = Q()
+		if querytext:
+			query = Q(content__contains="" + querytext + "")
+		
 		if channels:
 			q = Q()
 			for channel in channels.split("+"):
@@ -83,6 +114,11 @@ def search(request, page):
 			q = Q()
 			for game in games.split("+"):
 				q = q | Q(channel__guild__game__id=game)
+			query = query & q
+		if users:
+			q = Q()
+			for user in users.split("+"):
+				q = q | Q(user__username=user)
 			query = query & q
 		results = Message.objects.filter(query).order_by('-post_date')
 		

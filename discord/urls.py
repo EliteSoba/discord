@@ -13,5 +13,6 @@ urlpatterns = [
 	url(r'^(?P<channel>[0-9]+)/latest/$', views.latest, name='latest'),
 	url(r'^search/(?P<page>[0-9]+)/$', views.search, name='search'),
 	url(r'^search/$', views.searchhome, name='searchhome'),
+	url(r'^user/(?P<user>[0-9]+)/(?P<page>[0-9]+)/$', views.searchuser, name='searchuser'),
 	url(r'^(?P<guild>[0-9]+)/(?P<channel>[0-9]+)/find/(?P<message>[0-9]+)/$', views.find, name='find'),
 ]
